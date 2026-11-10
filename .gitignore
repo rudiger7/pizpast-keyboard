@@ -1,0 +1,26 @@
+# firmware builds
+build/
+*.uf2
+*.hex
+*.bin
+
+# KiCad
+*-backups/
+fp-info-cache
+*.kicad_prl
+*.lck
+_autosave-*
+\#auto_saved_files#
+# 3D export of the PCB (37 MB) - re-export from KiCad: File > Export > STEP
+*.step
+
+# FreeCAD
+*.FCBak
+*.FCStd1
+
+# OS / editors
+.DS_Store
+Thumbs.db
+desktop.ini
+.vscode/
+.idea/

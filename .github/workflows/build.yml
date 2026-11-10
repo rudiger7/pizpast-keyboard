@@ -1,0 +1,43 @@
+name: Build firmware
+
+on:
+  push:
+  pull_request:
+  workflow_dispatch:
+
+env:
+  # vial-qmk commit the firmware is tested against. Bump on purpose.
+  VIAL_QMK_REF: dd43959ae5c08d8a28d38a1acf7b04e86b14a344
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    container: ghcr.io/qmk/qmk_cli
+    strategy:
+      fail-fast: false
+      matrix:
+        keymap: [us_intl, it]
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Checkout vial-qmk
+        uses: actions/checkout@v4
+        with:
+          repository: vial-kb/vial-qmk
+          ref: ${{ env.VIAL_QMK_REF }}
+          path: vial-qmk
+          submodules: recursive
+
+      - name: Add PizPast keyboard
+        run: cp -r firmware/pizpast vial-qmk/keyboards/
+
+      - name: Compile
+        working-directory: vial-qmk
+        env:
+          QMK_HOME: ${{ github.workspace }}/vial-qmk
+        run: qmk compile -kb pizpast/ol -km ${{ matrix.keymap }}
+
+      - uses: actions/upload-artifact@v4
+        with:
+          name: pizpast_ol_${{ matrix.keymap }}
+          path: vial-qmk/*.uf2
