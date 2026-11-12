@@ -1,12 +1,12 @@
 #!/usr/bin/env bash
 # Build the firmware locally (Linux / WSL / QMK MSYS).
-# Usage: tools/build.sh [keymap...]      default: us_intl it
+# Usage: tools/build.sh [keymap...]      default: us_intl it uk
 # Needs a vial-qmk checkout set up with `qmk setup` (or the QMK MSYS tools).
 # VIAL_QMK=/path/to/vial-qmk tools/build.sh    to point at a different checkout.
 set -euo pipefail
 REPO="$(cd "$(dirname "$0")/.." && pwd)"
 VIAL_QMK="${VIAL_QMK:-$HOME/vial-qmk}"
-if [ $# -gt 0 ]; then KEYMAPS=("$@"); else KEYMAPS=(us_intl it); fi
+if [ $# -gt 0 ]; then KEYMAPS=("$@"); else KEYMAPS=(us_intl it uk); fi
 
 rm -rf "$VIAL_QMK/keyboards/pizpast"
 cp -r "$REPO/firmware/pizpast" "$VIAL_QMK/keyboards/"

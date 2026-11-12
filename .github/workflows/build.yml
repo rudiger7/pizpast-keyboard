@@ -16,7 +16,7 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        keymap: [us_intl, it]
+        keymap: [us_intl, it, uk]
     steps:
       - uses: actions/checkout@v4
 

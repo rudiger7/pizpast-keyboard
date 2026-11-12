@@ -147,7 +147,7 @@ Verify:
   are empty; `diff keymaps/it/vial.json keymaps/uk/vial.json` shows the two
   `pizpast` lines only; `python3 -m json.tool` accepts `vial.json`.
 
-### [ ] 2. `build(firmware): build the uk keymap`
+### [x] 2. `build(firmware): build the uk keymap`
 
 Files: `tools/build.sh`, `.github/workflows/build.yml`.
 
