@@ -57,9 +57,9 @@ Files: `firmware/pizpast/ol/{keyboard.json, translate.h, ol.c, keymaps/<lang>/{k
 - Local (Linux): `git clone --recurse-submodules https://github.com/vial-kb/vial-qmk ~/vial-qmk`, `qmk setup -H ~/vial-qmk` (or install the qmk CLI + arm-none-eabi toolchain), then `VIAL_QMK=~/vial-qmk tools/build.sh`. Output goes in `build/` (gitignored).
 - Flash: hold ESC while plugging in (or hold BOOT on the RP2040-Zero), then copy the `.uf2` to the `RPI-RP2` drive.
 
-## Status (2026-11-10)
+## Status (2026-11-12)
 
-- Both firmwares flashed and tested on hardware (Linux, US-International and Italian): they behave correctly.
+- The `us_intl` and `it` firmwares are flashed and tested on hardware (Linux, US-International and Italian, 2026-11-10): they behave correctly.
 - UK firmware (2026-11-12): written, not compiled, not flashed, not tested.
 - Main development OS: Linux.
 
