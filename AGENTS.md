@@ -15,14 +15,15 @@ A self-built 59-key keyboard (project restarted in Nov 2026).
 
 ## Goals
 
-1. Works on **standard** OS layouts (Windows + Linux), no custom layout to install. Priority: **US-International** and **Italian**. UK/French later. The symbol layout may still change.
+1. Works on **standard** OS layouts (Windows + Linux), no custom layout to install. Priority: **US-International** and **Italian**. UK exists (written, not yet tested); French later. The symbol layout may still change.
 2. Own configurator app (Tauri: Rust backend + web UI), replacing Vial for the main job: show/edit each key's Normal / Shift / AltGr output like a keycap. Lives in its **own repo**, `../pizpast-vial` (decided 2026-11-10): a vial-gui rewrite that works with any Vial keyboard, with the PizPast editor enabled by the `"pizpast"` field.
 3. Understand/own the QMK side (done: firmware lives in this repo).
 4. Case: smaller, separate riser, redo in FreeCAD (or code CAD like build123d). Better printable keycaps (uniform profile like DSA/XDA, KeyV2).
 
 ## Decisions so far
 
-- **One firmware per OS layout** (`keymaps/us_intl`, `keymaps/it`). Not one layer per language. User selects the matching OS layout.
+- **One firmware per OS layout** (`keymaps/us_intl`, `keymaps/it`, `keymaps/uk`). Not one layer per language. User selects the matching OS layout.
+- UK firmware (2026-11-12): the host layout is **UK extended** (Windows "United Kingdom Extended", Linux "English (UK, extended, Windows)"). Acute vowels come from the host (AltGr+vowel), grave vowels from the dead `` ` `` (Fn+Esc, then the vowel), so the tables have no vowel entries. `~` is AltGr on the `€ #` key.
 - Characters the OS layout can't type are simply unsupported (same as stock keyboards).
 - Italian capitals È/É/À/Ò/Ù: Caps Lock + AltGr+vowel (libxkbcommon uppercases è etc.). Linux only, accepted (2026-11-10); no firmware macro.
 - **vial-qmk used unmodified**, pinned to commit `dd43959ae5c08d8a28d38a1acf7b04e86b14a344` (2026-07-26). `firmware/pizpast/` is copied into `vial-qmk/keyboards/` at build time. No QMK fork.
@@ -44,20 +45,22 @@ Files: `firmware/pizpast/ol/{keyboard.json, translate.h, ol.c, keymaps/<lang>/{k
 
 - Tables are never activated. `KC_TRNS` = no translation. Other entries are sent with the user's Shift/RALT removed and the entry's own mods applied (`register_code16`).
 - Engine is in `process_record_kb` (`ol.c`). It only applies to keys resolving to layer 0 and is skipped while Ctrl/LAlt/GUI are held. One active translated key at a time. Suppressed mods are restored on release, and modifier releases are tracked. Auto-repeat works.
-- Keymaps use QMK `keymap_extras` names (`IT_*` from `keymap_italian.h`).
+- Keymaps use QMK `keymap_extras` names (`IT_*` from `keymap_italian.h`, `UK_*` from `keymap_uk.h`).
+- `vial.json` `pizpast.firmware` is `us_intl`, `it` or `uk`; `host_layout` is `"US - International (QWERTY)"`, `"Italian (QWERTY)"` or `"UK - Extended (QWERTY)"`. All firmwares share one Vial UID (same `config.h`); the app tells them apart by `pizpast.firmware`.
 - `vial.json` has an extra field for the future app: `"pizpast": {"firmware", "host_layout", "tables": {"shift":1,"altgr":2,"shift_altgr":3}, "fn_layer": 4}`. vial-qmk embeds vial.json LZMA-compressed, extra fields preserved.
 - USB VID 0x5050 PID 0x0001. Vial UID `D8 26 35 56 38 02 96 48`. Vial unlock = ESC (0,0) + bottom-right (4,11). Bootmagic = hold ESC while plugging in.
 - `keymaps/*/keymap.c` were generated from a table, but they're plain C now: edit them directly.
 
 ## Build
 
-- CI: `.github/workflows/build.yml` uses the `ghcr.io/qmk/qmk_cli` container, checks out pinned vial-qmk, builds `us_intl` + `it`, and uploads `.uf2` artifacts.
+- CI: `.github/workflows/build.yml` uses the `ghcr.io/qmk/qmk_cli` container, checks out pinned vial-qmk, builds `us_intl`, `it` + `uk`, and uploads `.uf2` artifacts.
 - Local (Linux): `git clone --recurse-submodules https://github.com/vial-kb/vial-qmk ~/vial-qmk`, `qmk setup -H ~/vial-qmk` (or install the qmk CLI + arm-none-eabi toolchain), then `VIAL_QMK=~/vial-qmk tools/build.sh`. Output goes in `build/` (gitignored).
 - Flash: hold ESC while plugging in (or hold BOOT on the RP2040-Zero), then copy the `.uf2` to the `RPI-RP2` drive.
 
 ## Status (2026-11-10)
 
 - Both firmwares flashed and tested on hardware (Linux, US-International and Italian): they behave correctly.
+- UK firmware (2026-11-12): written, not compiled, not flashed, not tested.
 - Main development OS: Linux.
 
 ## Next steps
@@ -71,13 +74,18 @@ Files: `firmware/pizpast/ol/{keyboard.json, translate.h, ol.c, keymaps/<lang>/{k
 - [x] Repeat on Italian (`pizpast_ol_it.uf2`): also AltGr+a/e/i/o/u = à è ì ò ù, Shift+AltGr+E = é.
 - [ ] Open stock Vial: unlock works, layers 1-3 show tables, edits take effect.
 - [ ] Linux needs the Vial udev rule for hidraw access (see get.vial.today Linux instructions).
+- [ ] UK firmware (`uk`): CI build green.
+- [ ] Flash `pizpast_ol_uk.uf2`, set the OS to UK extended (Linux: "English (UK, extended, Windows)").
+- [ ] Each Shift symbol: `! " @ $ % ^ & ( ) =`, `+ ?`, `[ { ] }`, `, ; . : - _`, `< >`, `' *`, `/ \ |`, `€ #`.
+- [ ] `€ # | \ @ ~` (`~` is AltGr on the `€ #` key).
+- [ ] AltGr+a/e/i/o/u = á é í ó ú; Fn+Esc then a vowel = à è ì ò ù; Fn+Esc then Space = `` ` ``.
 
 ### 2. Configurator
 - Moved to the separate repo `../pizpast-vial`. Its `AGENTS.md` has the stack, protocol plan and next steps.
 - Firmware-side contract the app relies on: the `"pizpast"` field in `vial.json` and the table layers 1-3. Change them together with the app.
 
 ### 3. Later
-- UK and French firmwares (French: digits need Shift, dead keys ^ ¨).
+- French firmware (French: digits need Shift, dead keys ^ ¨).
 - Case in FreeCAD (KiCad StepUp workbench, or a STEP exported from KiCad), riser, keycaps.
 
 ## Conventions
@@ -91,7 +99,7 @@ Files: `firmware/pizpast/ol/{keyboard.json, translate.h, ol.c, keymaps/<lang>/{k
 
 Run after every change:
 
-- Firmware: `VIAL_QMK=~/vial-qmk tools/build.sh` builds `us_intl` and `it` into `build/`. Needs a local vial-qmk at the pinned commit plus the qmk CLI (see Build). Not set up on the dev machine yet: until it is, say so and rely on CI (`.github/workflows/build.yml`) after the push.
+- Firmware: `VIAL_QMK=~/vial-qmk tools/build.sh` builds `us_intl`, `it` and `uk` into `build/`. Needs a local vial-qmk at the pinned commit plus the qmk CLI (see Build). Not set up on the dev machine yet: until it is, say so and rely on CI (`.github/workflows/build.yml`) after the push.
 - Docs only: no build needed.
 
 ## Never

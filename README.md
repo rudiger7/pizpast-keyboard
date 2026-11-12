@@ -2,7 +2,7 @@
 
 A 59-key keyboard: custom KiCad PCB, RP2040-Zero, MX switches, 3D-printed case and keycaps, QMK + Vial firmware.
 
-It works with the **standard** OS layout (US-International or Italian) on Windows and Linux. No custom layout to install: the firmware decides what every key sends, including with Shift and AltGr.
+It works with the **standard** OS layout (US-International, Italian or UK extended) on Windows and Linux. No custom layout to install: the firmware decides what every key sends, including with Shift and AltGr.
 
 ## Repo layout
 
@@ -29,6 +29,7 @@ tools/github-build.yml   GitHub Actions build -> move to .github/workflows/build
 |---|---|
 | `pizpast_ol_us_intl.uf2` | English (US, International) / Linux: "English (US, intl., with dead keys)" |
 | `pizpast_ol_it.uf2` | Italian |
+| `pizpast_ol_uk.uf2` | Windows: "United Kingdom Extended" / Linux: "English (UK, extended, Windows)". The plain UK layout also types the keycap legends. |
 
 ### Flash
 
@@ -37,7 +38,7 @@ tools/github-build.yml   GitHub Actions build -> move to .github/workflows/build
 
 ### Build
 
-- **GitHub:** every push builds both files. Download them from the Actions run ("Artifacts").
+- **GitHub:** every push builds the three files. Download them from the Actions run ("Artifacts").
 - **Locally:** set up [vial-qmk](https://github.com/vial-kb/vial-qmk) with `qmk setup` (Linux/WSL) or QMK MSYS (Windows), then run `VIAL_QMK=~/vial-qmk tools/build.sh`. Output goes in `build/`.
 
 The keyboard code lives only in this repo. vial-qmk is used unmodified, pinned in the GitHub workflow.

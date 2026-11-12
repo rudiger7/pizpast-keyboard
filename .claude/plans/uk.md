@@ -159,7 +159,7 @@ Verify: `bash -n tools/build.sh`; the workflow is still valid YAML
 (`python3 -c 'import yaml,sys; yaml.safe_load(open(sys.argv[1]))' …` if PyYAML
 is there, else by eye). No local compile (decision 3).
 
-### [ ] 3. `docs: UK firmware`
+### [x] 3. `docs: UK firmware`
 
 Files: `README.md`, `docs/translator.md`, `AGENTS.md`.
 

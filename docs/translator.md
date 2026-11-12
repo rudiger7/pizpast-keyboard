@@ -1,6 +1,6 @@
 # The translator
 
-A keyboard never sends characters. It sends key positions ("the key right of P") plus modifiers, and the OS layout turns them into characters. So a standard US-International or Italian layout plus the right firmware can give any symbol arrangement, with nothing installed.
+A keyboard never sends characters. It sends key positions ("the key right of P") plus modifiers, and the OS layout turns them into characters. So a standard US-International, Italian or UK extended layout plus the right firmware can give any symbol arrangement, with nothing installed.
 
 ## Layers
 
@@ -40,9 +40,11 @@ Select the layer (1 = Shift, 2 = AltGr, 3 = Shift+AltGr) and set a key. Use the 
 - Characters the OS layout can't produce can't be sent: `` ` `` and `~` on Windows Italian, `è` on plain US, and so on.
 - US-International has dead keys: `'` `"` `` ` `` `~` `^` wait for the next key. Press Space after them to get the plain symbol.
 - Standard Italian has no keys for capital accented letters (`È`, `À`...).
+- UK extended: `` ` `` is a dead key too (Fn+Esc on this keyboard). Press Space after it to get the plain symbol.
+- On the plain UK layout the keycap legends still come out, but AltGr+vowel differs between Windows and Linux, and there are no grave vowels.
 - Not yet tested on the real keyboard: check every symbol on Windows and Linux after flashing.
 
-## Default symbol layout (both firmwares)
+## Default symbol layout (all three firmwares)
 
 Physical key -> normal / Shift (/ AltGr):
 
@@ -52,5 +54,7 @@ Physical key -> normal / Shift (/ AltGr):
 - bottom row right of M: `, ;` `. :` `- _`
 - left of Space: `< >`
 - right of Fn: `' *`, `/ \ |`, `€ #`
-- AltGr + vowel: á é í ó ú (US-Intl, native) / à è ì ò ù, Shift+AltGr+E = é (Italian)
-- Fn: F1-F12 on the number row and Q/W, Del on Backspace, arrows on `-` `'` `/` `€`, `` ` `` on Esc (US-Intl)
+- AltGr + vowel: á é í ó ú (US-Intl and UK, native) / à è ì ò ù, Shift+AltGr+E = é (Italian)
+- UK: à è ì ò ù with Fn+Esc, then the vowel
+- AltGr + `€ #` key: `~` (UK only)
+- Fn: F1-F12 on the number row and Q/W, Del on Backspace, arrows on `-` `'` `/` `€`, `` ` `` on Esc (US-Intl and UK; UK also `¬` with Shift, `¦` with AltGr)
