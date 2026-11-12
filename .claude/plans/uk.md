@@ -97,7 +97,7 @@ the file is not in that sparse checkout's working tree).
 
 ## Steps
 
-### [ ] 1. `feat(firmware): UK keymap`
+### [x] 1. `feat(firmware): UK keymap`
 
 Files: new `firmware/pizpast/ol/keymaps/uk/{keymap.c, config.h, rules.mk, vial.json}`.
 
